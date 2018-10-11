@@ -11,6 +11,7 @@ import static java.lang.Thread.sleep;
 public class BadCodeExample {
 
     public static void main(String args[]) throws InterruptedException {
+
         WebDriver webDriver = new FirefoxDriver();
         webDriver.get("https://google.com");
         WebElement searchLine = webDriver.findElement(By.xpath("//input[@id='lst-ib']"));
@@ -24,17 +25,6 @@ public class BadCodeExample {
 
         System.out.println("Search results count: " + searchResults.size());
 
-       /* for (int i = 0; i < searchResults.size(); i++){
-            WebElement item = searchResults.get(i);
-            System.out.println(item.getText());
-            if (item.getText().contains(searchTerm)){
-                System.out.println("searTermm was found");
-            } else {
-                System.out.println("searchTers not found");
-            }
-            System.out.println("______________________________");
-        }*/
-        //class homework
         for (WebElement searchResult : searchResults){
             String searchResultText = searchResult.getText();
             System.out.println(searchResultText);
