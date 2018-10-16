@@ -5,9 +5,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTest {
+
+    WebDriver webDriver;
+
+    @BeforeMethod
+    public void beforeMethod(){
+        webDriver = new FirefoxDriver();
+    }
+
+    @AfterMethod
+    public void afterMethod(){
+        webDriver.quit();
+    }
 
     /**
      * Preconditions:
@@ -27,7 +41,23 @@ public class LoginTest {
     @Test // set annotation
     public void successfullLoginTest(){
 
-        WebDriver webDriver = new FirefoxDriver();
+        webDriver.get("https://www.linkedin.com/");
+        LoginPage loginPage = new LoginPage(webDriver);// создали экземпляр класса
+
+        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login page URL is wrong.");
+
+        loginPage.login("taras.nadtochii@gmail.com", "Taratest");
+        /*boolean isPresentSignInButton = webDriver.findElements(By.xpath("//input[@id='login-submit']")).size() > 0;
+        Assert.assertEquals(isPresentSignInButton, true, "There is no Sign in button on the page");*/
+
+
+        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/feed/", "Homepage URL is wrong");
+
+    }
+
+    @Test
+    public void negativeLoginTest(){
+
 
         webDriver.get("https://www.linkedin.com/");
         Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login page URL is wrong.");
@@ -37,20 +67,17 @@ public class LoginTest {
         Assert.assertEquals(isPresentSignInButton, true, "There is no Sign in button on the page");
 
 
+
+
         WebElement loginNameField = webDriver.findElement(By.xpath("//input[@id='login-email']"));
         WebElement loginPassField = webDriver.findElement(By.xpath("//input[@id='login-password']"));
-        String loginName = "taras.nadtochii@gmail.com";
-        String loginPassword = "Taratest";
+        String loginName = "a@b.c";
+        String loginPassword = "";
         loginNameField.sendKeys(loginName);
         loginPassField.sendKeys(loginPassword);
         signInButton.click();
 
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/feed/", "Homepage URL is wrong");
-
-
-
-
-        webDriver.quit();
+        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login URL is wrong");
 
     }
 
