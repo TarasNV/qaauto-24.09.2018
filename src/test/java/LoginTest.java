@@ -44,10 +44,15 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);// создали экземпляр класса
         Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login page URL is wrong.");
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Login page title is wrong.");
+        Assert.assertTrue(loginPage.signInButton.isDisplayed(), "SignIn button is not displayed on Login Page");
 
         loginPage.login("taras.nadtochii@gmail.com", "Taratest");
 
+        Homepage homepage = new Homepage(webDriver);
         Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/feed/", "Homepage URL is wrong");
+        Assert.assertEquals(webDriver.getTitle(), "LinkedIn", "Homepage title is wrong.");
+        Assert.assertTrue(homepage.profileNavItem.isDisplayed(), "profileNavItem is not displayed on Homepage");
 
     }
 
