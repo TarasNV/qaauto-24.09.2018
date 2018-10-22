@@ -45,8 +45,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);// создали экземпляр класса
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        loginPage.login("taras.nadtochii@gmail.com", "Taratest");
-        Homepage homepage = new Homepage(webDriver);
+        Homepage homepage =loginPage.login("taras.nadtochii@gmail.com", "Taratest");
         Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
     }
 
