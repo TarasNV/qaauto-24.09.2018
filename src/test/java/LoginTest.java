@@ -9,6 +9,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static java.lang.Thread.sleep;
+
 public class LoginTest {
 
     WebDriver webDriver;
@@ -40,44 +42,60 @@ public class LoginTest {
      */
     @Test // set annotation
     public void successfullLoginTest(){
-
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);// создали экземпляр класса
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login page URL is wrong.");
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Log In or Sign Up", "Login page title is wrong.");
-        Assert.assertTrue(loginPage.signInButton.isDisplayed(), "SignIn button is not displayed on Login Page");
-
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         loginPage.login("taras.nadtochii@gmail.com", "Taratest");
-
         Homepage homepage = new Homepage(webDriver);
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/feed/", "Homepage URL is wrong");
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn", "Homepage title is wrong.");
-        Assert.assertTrue(homepage.profileNavItem.isDisplayed(), "profileNavItem is not displayed on Homepage");
-
+        Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
     }
 
     @Test
     public void blankPasswordLoginTest(){
-
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login page URL is wrong.");
-
-        loginPage.login("a@b.c", "");
-
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login URL is wrong");
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+        loginPage.login("taras.nadtochii@gmail.com", "");
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
     }
 
     @Test
     public void invalidPasswordLoginTest(){
-
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/", "Login page URL is wrong.");
-
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         loginPage.login("taras.nadtochii@gmail.com", "invalid_password");
-
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://www.linkedin.com/uas/login-submit?loginSubmitSource=GUEST_HOME", "LoginSubmit URL is wrong");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
+        Assert.assertTrue(loginSubmitPage.isPageLoadedWithPasswordMsg(), "Login Submit page is not loaded");
     }
 
+    //Invalid email address tests
+    @Test
+    public void noAtInEmailTest(){
+        webDriver.get("https://www.linkedin.com/");
+        LoginPage loginPage = new LoginPage(webDriver);
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+        loginPage.login("ab.c", "password");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
+        Assert.assertTrue(loginSubmitPage.isPageLoadedWithNameMsg(), "Login Submit page is not loaded");
+    }
+
+    @Test
+    public void blankLoginNameTest(){
+        webDriver.get("https://www.linkedin.com/");
+        LoginPage loginPage = new LoginPage(webDriver);
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+        loginPage.login("", "password");
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+    }
+
+    @Test
+    public void notRegisteredEmailTest(){
+        webDriver.get("https://www.linkedin.com/");
+        LoginPage loginPage = new LoginPage(webDriver);
+        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+        loginPage.login("asdasd@asd.s", "password");
+        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
+        Assert.assertTrue(loginSubmitPage.isPageLoadedWithNameMsg(), "Login Submit page is not loaded");
+    }
 }
