@@ -4,6 +4,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import static java.lang.Thread.sleep;
+
 public class LoginPage{
 
     private WebDriver webDriver;
@@ -39,17 +41,28 @@ public class LoginPage{
         loginNameField.sendKeys(userEmail);
         loginPassField.sendKeys(userPassword);
         signInButton.click();
-
         return new Homepage(webDriver);
     }
 
-    public LoginPage loginToLoginPage(String userEmail, String userPassword){
+    public <T> T login(String userEmail, String userPassword){
 
         loginNameField.sendKeys(userEmail);
         loginPassField.sendKeys(userPassword);
         signInButton.click();
 
-        return new LoginPage(webDriver);
+        try {
+            sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (webDriver.getCurrentUrl().contains("/feed")){
+            return (T) new Homepage(webDriver);
+        }
+        if (webDriver.getCurrentUrl().contains("/uas/login-submit")){
+            return (T) new LoginSubmitPage(webDriver);
+        } else {
+            return (T) new LoginPage(webDriver);
+        }
     }
 
     public LoginSubmitPage loginToSubmitPage(String userEmail, String userPassword){
@@ -57,7 +70,6 @@ public class LoginPage{
         loginNameField.sendKeys(userEmail);
         loginPassField.sendKeys(userPassword);
         signInButton.click();
-
         return new LoginSubmitPage(webDriver);
     }
 

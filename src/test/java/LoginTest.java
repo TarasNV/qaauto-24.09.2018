@@ -7,6 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
@@ -25,6 +26,15 @@ public class LoginTest {
         webDriver.quit();
     }
 
+    @DataProvider
+    public Object[][] validDataProvider() {
+        return new Object[][]{
+                { "taras.nadtochii@gmail.com", "Taratest" },
+                { "TARAS.nadtochii@gmail.com", "Taratest" },
+                { " taras.nadtochii@gmail.com ", "Taratest" }
+        };
+    }
+
     /**
      * Preconditions:
      * - Open FF browser
@@ -40,12 +50,12 @@ public class LoginTest {
      * Postconditions:
      * - Close FF browser
      */
-    @Test // set annotation
-    public void successfullLoginTest(){
+    @Test(dataProvider = "validDataProvider")
+    public void successfullLoginTest(String userEmail, String userPassword){
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        Homepage homepage = loginPage.loginToHomepage("taras.nadtochii@gmail.com", "Taratest");
+        Homepage homepage = loginPage.login(userEmail, userPassword);
         Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
     }
 
@@ -54,7 +64,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginPage loginPageBlankCred = loginPage.loginToLoginPage("taras.nadtochii@gmail.com", "");
+        LoginPage loginPageBlankCred = loginPage.login("taras.nadtochii@gmail.com", "");
         Assert.assertTrue(loginPageBlankCred.isPageLoaded(), "Login page is not loaded");
     }
 
@@ -63,7 +73,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginSubmitPage loginSubmitPage = loginPage.loginToSubmitPage("taras.nadtochii@gmail.com", "invalid_password");
+        LoginSubmitPage loginSubmitPage = loginPage.login("taras.nadtochii@gmail.com", "invalid_password");
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 
@@ -73,7 +83,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginSubmitPage loginSubmitPage = loginPage.loginToSubmitPage("ab.c", "password");
+        LoginSubmitPage loginSubmitPage = loginPage.login("ab.c", "password");
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 
@@ -82,7 +92,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginPage loginPageBlankCred = loginPage.loginToLoginPage("", "password");
+        LoginPage loginPageBlankCred = loginPage.login("", "password");
         Assert.assertTrue(loginPageBlankCred.isPageLoaded(), "Login page is not loaded");
     }
 
@@ -91,7 +101,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginSubmitPage loginSubmitPage = loginPage.loginToSubmitPage("asdasd@asd.s", "password");
+        LoginSubmitPage loginSubmitPage = loginPage.login("asdasd@asd.s", "password");
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 }

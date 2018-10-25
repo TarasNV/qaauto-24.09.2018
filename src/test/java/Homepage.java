@@ -11,6 +11,8 @@ public class Homepage {
 
     @FindBy(xpath = "//li[@id='profile-nav-item']")
     private WebElement profileNavItem;
+    @FindBy(xpath = "//a[@data-control-name='nav.settings_signout]")
+    private WebElement signOutButton;
 
     public Homepage(WebDriver webDriver) {
         this.webDriver = webDriver;
