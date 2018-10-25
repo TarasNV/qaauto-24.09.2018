@@ -1,17 +1,20 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 public class Homepage {
 
     private WebDriver webDriver;
 
+    @FindBy(xpath = "//li[@id='profile-nav-item']")
     private WebElement profileNavItem;
 
     public Homepage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        initElements();
+        PageFactory.initElements(webDriver, this);
     }
 
     public boolean isProfileNavItemDisplayed(){
@@ -24,7 +27,5 @@ public class Homepage {
                 && webDriver.getTitle().contains("LinkedIn")
                 && isProfileNavItemDisplayed();
     }
-    private void initElements(){
-        profileNavItem = webDriver.findElement(By.xpath("//li[@id='profile-nav-item']"));
-    }
+
 }

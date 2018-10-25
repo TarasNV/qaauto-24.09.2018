@@ -43,9 +43,9 @@ public class LoginTest {
     @Test // set annotation
     public void successfullLoginTest(){
         webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);// создали экземпляр класса
+        LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        Homepage homepage =loginPage.login("taras.nadtochii@gmail.com", "Taratest");
+        Homepage homepage = loginPage.loginToHomepage("taras.nadtochii@gmail.com", "Taratest");
         Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
     }
 
@@ -54,8 +54,8 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        loginPage.login("taras.nadtochii@gmail.com", "");
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+        LoginPage loginPageBlankCred = loginPage.loginToLoginPage("taras.nadtochii@gmail.com", "");
+        Assert.assertTrue(loginPageBlankCred.isPageLoaded(), "Login page is not loaded");
     }
 
     @Test
@@ -63,9 +63,8 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        loginPage.login("taras.nadtochii@gmail.com", "invalid_password");
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
-        Assert.assertTrue(loginSubmitPage.isPageLoadedWithPasswordMsg(), "Login Submit page is not loaded");
+        LoginSubmitPage loginSubmitPage = loginPage.loginToSubmitPage("taras.nadtochii@gmail.com", "invalid_password");
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 
     //Invalid email address tests
@@ -74,9 +73,8 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        loginPage.login("ab.c", "password");
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
-        Assert.assertTrue(loginSubmitPage.isPageLoadedWithNameMsg(), "Login Submit page is not loaded");
+        LoginSubmitPage loginSubmitPage = loginPage.loginToSubmitPage("ab.c", "password");
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 
     @Test
@@ -84,8 +82,8 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        loginPage.login("", "password");
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
+        LoginPage loginPageBlankCred = loginPage.loginToLoginPage("", "password");
+        Assert.assertTrue(loginPageBlankCred.isPageLoaded(), "Login page is not loaded");
     }
 
     @Test
@@ -93,8 +91,7 @@ public class LoginTest {
         webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        loginPage.login("asdasd@asd.s", "password");
-        LoginSubmitPage loginSubmitPage = new LoginSubmitPage(webDriver);
-        Assert.assertTrue(loginSubmitPage.isPageLoadedWithNameMsg(), "Login Submit page is not loaded");
+        LoginSubmitPage loginSubmitPage = loginPage.loginToSubmitPage("asdasd@asd.s", "password");
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
     }
 }

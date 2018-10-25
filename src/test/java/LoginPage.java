@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class LoginPage{
 
     private WebDriver webDriver;
 
@@ -30,10 +30,11 @@ public class LoginPage {
     }
 
     public boolean isSignInButtonDisplayed(){
+
         return signInButton.isDisplayed();
     }
 
-    public Homepage login(String userEmail, String userPassword){
+    public Homepage loginToHomepage(String userEmail, String userPassword){
 
         loginNameField.sendKeys(userEmail);
         loginPassField.sendKeys(userPassword);
@@ -41,5 +42,32 @@ public class LoginPage {
 
         return new Homepage(webDriver);
     }
+
+    public LoginPage loginToLoginPage(String userEmail, String userPassword){
+
+        loginNameField.sendKeys(userEmail);
+        loginPassField.sendKeys(userPassword);
+        signInButton.click();
+
+        return new LoginPage(webDriver);
+    }
+
+    public LoginSubmitPage loginToSubmitPage(String userEmail, String userPassword){
+
+        loginNameField.sendKeys(userEmail);
+        loginPassField.sendKeys(userPassword);
+        signInButton.click();
+
+        return new LoginSubmitPage(webDriver);
+    }
+
+    /*private Class<T> clazz;
+
+    public T login(String userEmail, String userPassword){
+        loginNameField.sendKeys(userEmail);
+        loginPassField.sendKeys(userPassword);
+        signInButton.click();
+        return PageFactory.initElements(webDriver, clazz);
+    }*/
 
 }

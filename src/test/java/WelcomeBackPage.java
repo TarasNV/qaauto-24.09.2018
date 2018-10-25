@@ -4,14 +4,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginSubmitPage {
+public class WelcomeBackPage {
 
     private WebDriver webDriver;
 
-    @FindBy(xpath = "//div[@id='control_gen_1']")
+    @FindBy(xpath = "//button[@class='btn__primary--large from__button--floating']")
     private WebElement alertMessage;
 
-    public LoginSubmitPage(WebDriver webDriver) {
+    public WelcomeBackPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
@@ -19,10 +19,10 @@ public class LoginSubmitPage {
     public boolean isPageLoaded(){
         return webDriver.getCurrentUrl().contains("https://www.linkedin.com/uas/login-submit")
                 //&& webDriver.getTitle().contains("Sign In to LinkedIn")
-                && isAlertMessageDisplayed();
+                && isLargeSignInButtonDisplayed();
     }
 
-    public boolean isAlertMessageDisplayed(){
+    public boolean isLargeSignInButtonDisplayed(){
         return alertMessage.isDisplayed();
     }
 
