@@ -15,10 +15,13 @@ import static java.lang.Thread.sleep;
 public class LoginTest {
 
     WebDriver webDriver;
+    LoginPage loginPage;
 
     @BeforeMethod
     public void beforeMethod(){
         webDriver = new FirefoxDriver();
+        webDriver.get("https://www.linkedin.com/");
+        loginPage = new LoginPage(webDriver);
     }
 
     @AfterMethod
@@ -53,8 +56,6 @@ public class LoginTest {
 
     @Test(dataProvider = "validDataProvider")
     public void successfullLoginTest(String userEmail, String userPassword){
-        webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         Homepage homepage = loginPage.login(userEmail, userPassword);
         Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
@@ -76,7 +77,6 @@ public class LoginTest {
                                                             String userPassword,
                                                             String emailValidationMessage,
                                                             String passwordValidationMessage){
-        webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPassword);
@@ -97,7 +97,6 @@ public class LoginTest {
     }
     @Test(dataProvider = "blankCredsDataProvider")
     public void remainOnLoginPageNegativeTest(String userEmail, String userPassword){
-        webDriver.get("https://www.linkedin.com/");
         LoginPage loginPage = new LoginPage(webDriver);
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         LoginPage loginPageRemained = loginPage.login(userEmail, userPassword);
