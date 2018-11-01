@@ -1,9 +1,12 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+
+import static java.lang.Thread.sleep;
 
 public class Homepage {
 
@@ -13,6 +16,8 @@ public class Homepage {
     private WebElement profileNavItem;
     @FindBy(xpath = "//a[@data-control-name='nav.settings_signout]")
     private WebElement signOutButton;
+    @FindBy(xpath = "//input[@role='combobox']")
+    private WebElement SearchLine;
 
     public Homepage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -29,5 +34,13 @@ public class Homepage {
                 && webDriver.getTitle().contains("LinkedIn")
                 && isProfileNavItemDisplayed();
     }
+
+    public SearchPage performSearch(String searchTerm){
+        SearchLine.sendKeys(searchTerm);
+        SearchLine.sendKeys(Keys.ENTER);
+        return new SearchPage(webDriver);
+    }
+
+
 
 }
