@@ -16,7 +16,7 @@ public class Homepage {
     private WebElement profileNavItem;
     @FindBy(xpath = "//a[@data-control-name='nav.settings_signout]")
     private WebElement signOutButton;
-    @FindBy(xpath = "//input[@role='combobox']")
+    @FindBy(xpath = "//input[contains(@aria-owns, 'results')]")
     private WebElement SearchLine;
 
     public Homepage(WebDriver webDriver) {
@@ -35,9 +35,14 @@ public class Homepage {
                 && isProfileNavItemDisplayed();
     }
 
-    public SearchPage performSearch(String searchTerm){
+    public SearchPage search(String searchTerm){
         SearchLine.sendKeys(searchTerm);
         SearchLine.sendKeys(Keys.ENTER);
+        try {
+            sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new SearchPage(webDriver);
     }
 

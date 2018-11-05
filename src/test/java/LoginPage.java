@@ -19,6 +19,9 @@ public class LoginPage{
     @FindBy(xpath = "//input[@id='login-password']")
     private WebElement loginPassField;
 
+    @FindBy(xpath = "//a[@class='link-forgot-password']")
+    private WebElement forgotPasswordButton;
+
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
@@ -65,6 +68,12 @@ public class LoginPage{
         }
     }
 
+    public RequestPasswordResetPage resetPassword(){
+
+        forgotPasswordButton.click();
+        return new RequestPasswordResetPage(webDriver);
+    }
+
     public LoginSubmitPage loginToSubmitPage(String userEmail, String userPassword){
 
         loginNameField.sendKeys(userEmail);
@@ -72,14 +81,4 @@ public class LoginPage{
         signInButton.click();
         return new LoginSubmitPage(webDriver);
     }
-
-    /*private Class<T> clazz;
-
-    public T login(String userEmail, String userPassword){
-        loginNameField.sendKeys(userEmail);
-        loginPassField.sendKeys(userPassword);
-        signInButton.click();
-        return PageFactory.initElements(webDriver, clazz);
-    }*/
-
 }

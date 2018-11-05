@@ -1,9 +1,11 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPage {
@@ -14,8 +16,8 @@ public class SearchPage {
     private WebElement allFiltersButton;
     @FindBy(xpath = "//div[@class='search-result__wrapper']")
     private WebElement searchItem;
-    //@FindBy(xpath = "//div[@class='search-result__wrapper']")
-    //private List<WebElement> searchResults;
+    @FindBy(xpath = "//li[contains(@class, 'search-result__occluded-item')]")
+    public List<WebElement> searchResults;
 
     public SearchPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -32,32 +34,17 @@ public class SearchPage {
         return allFiltersButton.isDisplayed();
     }
 
-    public boolean isTenResultsPerPage(List<WebElement> searchResults){
-        if (searchResults.size() == 10){
-            return true;
-        } else {
-            return false;
-        }
+    public int getSearchItemsNumber() {
+        return searchResults.size();
     }
 
-    public boolean isSearchItemContainSearchTerm(List<WebElement> searchResults, String searchTerm){
-        for (WebElement searchResult : searchResults){
+    public List<String> getSearchResultsList(){
+        List<String> searchResultsList = new ArrayList<String>();
+        for (WebElement searchResult : searchResults) {
             String searchResultText = searchResult.getText();
-            boolean searchResultFlag = true;
-            if (searchResultText.toLowerCase().contains(searchTerm.toLowerCase())){
-                 searchResultFlag = true;
-                 return searchResultFlag;
-            } else {
-                searchResultFlag = false;
-                return searchResultFlag;
-            }
-
+            ((JavascriptExecutor)webDriver).executeScript("arguments[0].scrollIntoView();", searchResult);
+            searchResultsList.add(searchResultText);
         }
-        if (true){
-            return true;
-        }else {
-            return false;
-        }
+        return searchResultsList;
     }
-
 }

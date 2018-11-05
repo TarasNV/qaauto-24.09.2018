@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -54,25 +55,26 @@ public class SearchTest {
                 {"HR"}
         };
     }
-    @Test(dataProvider = "searchTermsDataProvider")
-    public void basicSearchTest( String searchTerm){
+    @Test
+    public void basicSearchTest(){
+        String searchTerm = "HR";
+
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         Homepage homepage = loginPage.login("taras.nadtochii@gmail.com", "Taratest");
         Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
 
-        SearchPage searchPage = homepage.performSearch(searchTerm);
-
-        try {
-            sleep(8000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        SearchPage searchPage = homepage.search(searchTerm);
 
         Assert.assertTrue(searchPage.isPageLoaded(), "Search page was not loaded");
 
-        List<WebElement> searchResults = webDriver.findElements(By.xpath("//div[@class='search-result__wrapper']"));
-        Assert.assertTrue(searchPage.isTenResultsPerPage(searchResults), "Search results number on the first page is not 10");
+        Assert.assertEquals(searchPage.getSearchItemsNumber(), 10, "Search results number on the first page is not 10");
 
-        Assert.assertTrue(searchPage.isSearchItemContainSearchTerm(searchResults, searchTerm), "Not all search results contains search term.");
-    }
+        List<String> searchResultsList = searchPage.getSearchResultsList();
+
+        for (String searchResult : searchResultsList) {
+            Assert.assertTrue(searchResult.toLowerCase().contains(searchTerm.toLowerCase()),
+                    "SearchTerm "+searchTerm+" not found in:\n"+searchResult);
+            }
+
+        }
     }
