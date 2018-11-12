@@ -1,8 +1,14 @@
+package page;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+/**
+ * Linkedin Login Submeit page object class
+ */
 
 public class LoginSubmitPage {
 
@@ -16,6 +22,12 @@ public class LoginSubmitPage {
 
     @FindBy(xpath = "//span[@id='session_password-login-error']")
     private WebElement passwordValidationMessage;
+
+    /**
+     * Constructor for LoginSubmitPage.
+     *
+     * @param webDriver - driver instance from tests.
+     */
 
     public LoginSubmitPage(WebDriver webDriver) {
         this.webDriver = webDriver;

@@ -1,9 +1,15 @@
+package page;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PasswordResetSubmitPage {
+/**
+ * Linked in Set New Password page objecct class
+ */
+
+public class SetNewPasswordPage {
     private WebDriver webDriver;
 
     @FindBy(xpath = "//button[@id='reset-password-submit-button']")
@@ -15,7 +21,13 @@ public class PasswordResetSubmitPage {
     @FindBy(xpath = "//input[@id='confirmPassword']")
     private WebElement confirmPasswordInput;
 
-    public PasswordResetSubmitPage(WebDriver webDriver) {
+    /**
+     * Constructor for SetNewPasswordPage.
+     *
+     * @param webDriver - driver instance from tests.
+     */
+
+    public SetNewPasswordPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
@@ -31,10 +43,10 @@ public class PasswordResetSubmitPage {
                 && isConfirmPasswordInputDisplayed();
     }
 
-    public PasswordResetPage confirmResetPassword(){
-        newPasswordInput.sendKeys("Taratest100392");
-        confirmPasswordInput.sendKeys("Taratest100392");
+    public SuccessfulPasswordResetPage submitNewPassword(String newUserPassword) {
+        newPasswordInput.sendKeys(newUserPassword);
+        confirmPasswordInput.sendKeys(newUserPassword);
         resetPasswordSubmitButton.click();
-        return new PasswordResetPage(webDriver);
+        return new SuccessfulPasswordResetPage(webDriver);
     }
 }

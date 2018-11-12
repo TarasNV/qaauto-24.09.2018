@@ -1,38 +1,47 @@
+package page;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class RequestPasswordResetPage {
+/**
+ * Linked in Successfull Password Reset page object class
+ */
 
+public class SuccessfulPasswordResetPage {
     private WebDriver webDriver;
 
     @FindBy(xpath = "//button[@id='reset-password-submit-button']")
     private WebElement resetPasswordSubmitButton;
 
-    @FindBy(xpath = "//input[@id='username']")
-    private WebElement userNameInput;
+    /**
+     * Constructor for SuccessfulPasswordResetPage.
+     *
+     * @param webDriver - driver instance from tests.
+     */
 
-    public RequestPasswordResetPage(WebDriver webDriver) {
+    public SuccessfulPasswordResetPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
 
-    public boolean isResetPasswordSubmitButtonDissplayed(){
+    public boolean isResetPasswordSubmitButtonDisplayed(){
         return resetPasswordSubmitButton.isDisplayed();
     }
 
     public boolean isPageLoaded(){
 
-        return webDriver.getCurrentUrl().contains("https://www.linkedin.com/uas/request-password-reset")
+        return webDriver.getCurrentUrl().equals("https://www.linkedin.com/checkpoint/rp/password-reset-submit")
                 && webDriver.getTitle().contains("LinkedIn")
-                && isResetPasswordSubmitButtonDissplayed();
+                && isResetPasswordSubmitButtonDisplayed();
     }
 
-    public RequestPasswordResetSubmitPage sendURL(){
-        userNameInput.sendKeys("taras.nadtochii@gmail.com");
+    public Homepage resetPassword(){
+
         resetPasswordSubmitButton.click();
-        return new RequestPasswordResetSubmitPage(webDriver);
+        return new Homepage(webDriver);
     }
+
 
 }

@@ -1,10 +1,15 @@
-import org.openqa.selenium.By;
+package page;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import static java.lang.Thread.sleep;
+
+/**
+ * Linkedin Logi page object class
+ */
 
 public class LoginPage{
 
@@ -21,6 +26,12 @@ public class LoginPage{
 
     @FindBy(xpath = "//a[@class='link-forgot-password']")
     private WebElement forgotPasswordButton;
+
+    /**
+     * Constructor for LoginPage.
+     *
+     * @param webDriver - driver instance from tests.
+     */
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -46,6 +57,15 @@ public class LoginPage{
         signInButton.click();
         return new Homepage(webDriver);
     }
+
+    /**
+     * User logs in by username/password.
+     *
+     * @param userEmail - String with userEmail.
+     * @param userPassword - String with userPassword.
+     * @param <T> - generic type to return different PageObjects.
+     * @return one of corresponding PageObjects LoginPage/HomePage/LoginSubmitPage.
+     */
 
     public <T> T login(String userEmail, String userPassword){
 

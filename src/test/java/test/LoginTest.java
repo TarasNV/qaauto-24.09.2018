@@ -1,33 +1,16 @@
-import net.bytebuddy.asm.Advice;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+package test;
+
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import page.Homepage;
+import page.LoginPage;
+import page.LoginSubmitPage;
 
 import static java.lang.Thread.sleep;
 
-public class LoginTest {
+public class LoginTest extends BaseTest{
 
-    WebDriver webDriver;
-    LoginPage loginPage;
-
-    @BeforeMethod
-    public void beforeMethod(){
-        webDriver = new FirefoxDriver();
-        webDriver.get("https://www.linkedin.com/");
-        loginPage = new LoginPage(webDriver);
-    }
-
-    @AfterMethod
-    public void afterMethod(){
-        webDriver.quit();
-    }
 
     /**
      * Preconditions:
@@ -58,7 +41,7 @@ public class LoginTest {
     public void successfullLoginTest(String userEmail, String userPassword){
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         Homepage homepage = loginPage.login(userEmail, userPassword);
-        Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
+        Assert.assertTrue(homepage.isPageLoaded(), "page.Homepage is not loaded");
     }
 
 
@@ -77,7 +60,7 @@ public class LoginTest {
                                                             String userPassword,
                                                             String emailValidationMessage,
                                                             String passwordValidationMessage){
-        LoginPage loginPage = new LoginPage(webDriver);
+
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         LoginSubmitPage loginSubmitPage = loginPage.login(userEmail, userPassword);
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
@@ -97,58 +80,9 @@ public class LoginTest {
     }
     @Test(dataProvider = "blankCredsDataProvider")
     public void remainOnLoginPageNegativeTest(String userEmail, String userPassword){
-        LoginPage loginPage = new LoginPage(webDriver);
+
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         LoginPage loginPageRemained = loginPage.login(userEmail, userPassword);
         Assert.assertTrue(loginPageRemained.isPageLoaded(), "Login Submit page is not loaded");
     }
-/*
-OLD REALISATION
-
-    @Test
-    public void blankPasswordLoginTest(){
-        webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginPage loginPageBlankCred = loginPage.login("taras.nadtochii@gmail.com", "");
-        Assert.assertTrue(loginPageBlankCred.isPageLoaded(), "Login page is not loaded");
-    }
-
-    @Test
-    public void invalidPasswordLoginTest(){
-        webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginSubmitPage loginSubmitPage = loginPage.login("taras.nadtochii@gmail.com", "invalid_password");
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
-    }
-
-    //Invalid email address tests
-    @Test
-    public void noAtInEmailTest(){
-        webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginSubmitPage loginSubmitPage = loginPage.login("ab.c", "password");
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
-    }
-
-    @Test
-    public void blankLoginNameTest(){
-        webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginPage loginPageBlankCred = loginPage.login("", "password");
-        Assert.assertTrue(loginPageBlankCred.isPageLoaded(), "Login page is not loaded");
-    }
-
-    @Test
-    public void notRegisteredEmailTest(){
-        webDriver.get("https://www.linkedin.com/");
-        LoginPage loginPage = new LoginPage(webDriver);
-        Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
-        LoginSubmitPage loginSubmitPage = loginPage.login("asdasd@asd.s", "password");
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded");
-    }
-    */
 }

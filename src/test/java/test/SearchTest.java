@@ -1,36 +1,21 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+package test;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import javax.naming.directory.SearchResult;
+import page.Homepage;
+import page.LoginPage;
+import page.SearchPage;
 
 import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class SearchTest {
-    WebDriver webDriver;
-    LoginPage loginPage;
-
-
-    @BeforeMethod
-    public void beforeMethod(){
-        webDriver = new FirefoxDriver();
-        webDriver.get("https://www.linkedin.com/");
-        loginPage = new LoginPage(webDriver);
-    }
-
-    @AfterMethod
-    public void afterMethod(){
-        webDriver.quit();
-    }
+public class SearchTest extends BaseTest{
 
     /**
      * PreConditions:
@@ -40,7 +25,7 @@ public class SearchTest {
      * Scenario:
      * - Verify that Login page is loaded
      * - Log in with credentials
-     * - Verify that Homepage is loaded
+     * - Verify that page.Homepage is loaded
      * - Enter 'searchTerm' into search field and press Return key.
      * - Verify that Search page is loaded.
      * - Verify number of search results is equal to 10
@@ -61,7 +46,7 @@ public class SearchTest {
 
         Assert.assertTrue(loginPage.isPageLoaded(), "Login page is not loaded");
         Homepage homepage = loginPage.login("taras.nadtochii@gmail.com", "Taratest");
-        Assert.assertTrue(homepage.isPageLoaded(), "Homepage is not loaded");
+        Assert.assertTrue(homepage.isPageLoaded(), "page.Homepage is not loaded");
 
         SearchPage searchPage = homepage.search(searchTerm);
 

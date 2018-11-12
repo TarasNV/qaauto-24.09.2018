@@ -1,16 +1,18 @@
-import org.openqa.selenium.By;
+package page;
+
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 
 import static java.lang.Thread.sleep;
 
-public class Homepage {
+/**
+ * Linkedin Home page object class
+ */
 
-    private WebDriver webDriver;
+public class Homepage extends BasePage{
 
     @FindBy(xpath = "//li[@id='profile-nav-item']")
     private WebElement profileNavItem;
@@ -18,6 +20,12 @@ public class Homepage {
     private WebElement signOutButton;
     @FindBy(xpath = "//input[contains(@aria-owns, 'results')]")
     private WebElement SearchLine;
+
+    /**
+     * Constructor for Homepage.
+     *
+     * @param webDriver - driver instance from tests.
+     */
 
     public Homepage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -34,6 +42,12 @@ public class Homepage {
                 && webDriver.getTitle().contains("LinkedIn")
                 && isProfileNavItemDisplayed();
     }
+
+    /**
+     * Method that populates search line with searchTerm and presses Enter
+     *
+     * @param searchTerm - key word that has been entered into search line
+     */
 
     public SearchPage search(String searchTerm){
         SearchLine.sendKeys(searchTerm);
